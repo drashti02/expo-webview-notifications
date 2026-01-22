@@ -61,5 +61,6 @@ navigation, and HLS video playback were verified on the real device.
 ```bash
 npm install
 
-
+Start the development server
+npx expo start
 
