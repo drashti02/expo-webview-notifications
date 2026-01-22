@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { WebView } from 'react-native-webview';
-import * as Notifications from 'expo-notifications';
-import { Button, Card } from 'react-native-paper';
+import * as Notifications from "expo-notifications";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { Button, Card } from "react-native-paper";
+import { WebView } from "react-native-webview";
 
 // Required so notifications show when app is open
 Notifications.setNotificationHandler({
@@ -16,48 +16,46 @@ Notifications.setNotificationHandler({
 });
 
 export default function WebViewScreen() {
-  useEffect(() => {
-    // Ask permission
-    Notifications.requestPermissionsAsync();
+  const [webviewNotified, setWebviewNotified] = useState(false); // ✅ Track notification
 
-    // Android notification channel (REQUIRED)
-    Notifications.setNotificationChannelAsync('default', {
-      name: 'Default',
+  useEffect(() => {
+    Notifications.requestPermissionsAsync();
+    Notifications.setNotificationChannelAsync("default", {
+      name: "Default",
       importance: Notifications.AndroidImportance.HIGH,
     });
   }, []);
 
   const sendNotification = async (title: string, body: string) => {
     await Notifications.scheduleNotificationAsync({
-      content: {
-        title,
-        body,
-      },
+      content: { title, body },
       trigger: {
-        seconds: 3,          // 2–5 sec delay ✔
-        channelId: 'default', // Android required ✔
+        seconds: 3,
+        channelId: "default",
       },
     });
+  };
+
+  const handleWebViewLoad = () => {
+    if (!webviewNotified) {
+      sendNotification("WebView Loaded", "Website finished loading");
+      setWebviewNotified(true);
+    }
   };
 
   return (
     <View style={styles.container}>
       <WebView
-        source={{ uri: 'https://expo.dev' }}
+        source={{ uri: "https://expo.dev" }}
         style={styles.webview}
-        onLoadEnd={() =>
-          sendNotification(
-            'WebView Loaded',
-            'Website finished loading'
-          )
-        }
+        onLoadEnd={handleWebViewLoad}
       />
 
       <Card style={styles.card}>
         <Button
           mode="contained"
           onPress={() =>
-            sendNotification('Hello 👋', 'This is Notification One')
+            sendNotification("Hello 👋", "This is Notification One")
           }
         >
           Notification 1
@@ -67,7 +65,7 @@ export default function WebViewScreen() {
           mode="outlined"
           style={{ marginTop: 10 }}
           onPress={() =>
-            sendNotification('Reminder ⏰', 'This is Notification Two')
+            sendNotification("Reminder ⏰", "This is Notification Two")
           }
         >
           Notification 2
