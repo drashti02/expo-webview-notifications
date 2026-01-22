@@ -1,50 +1,65 @@
-# Welcome to your Expo app 👋
+# Expo WebView, Notifications & Video Player App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## About
+This project is a small Expo React Native application built as part of an assignment. The main goal was to demonstrate how to embed a website using WebView, trigger local notifications based on user interaction, and play an HLS video stream on a separate screen.
 
-## Get started
+The app is built using Expo’s managed workflow and is fully compatible with Expo Go, without requiring any custom native configuration.
+## Features
 
-1. Install dependencies
+### WebView Screen
+- A website is embedded inside the app using `react-native-webview`
+- Two buttons are placed below the WebView
+- Each button triggers a different local notification with a short delay
+- A notification is also triggered when the WebView finishes loading (bonus feature)
 
-   ```bash
-   npm install
-   ```
+### Local Notifications
+- Implemented using `expo-notifications`
+- Two distinct notification messages are used
+- Notifications are triggered with a 3-second delay
+- Android notification channels are properly configured
+- Tested using Expo Go on a real device
 
-2. Start the app
+### Video Player Screen
+- Separate screen dedicated to video playback
+- HLS video playback implemented using `expo-av`
+- Uses the provided test stream URL:`https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8`
+- Native video controls are enabled for play, pause, and fullscreen
 
-   ```bash
-   npx expo start
-   ```
+### Navigation
+- Navigation is handled using Expo Router
+- Bottom tab navigation allows switching between:
+- WebView + Notifications screen
+- Video Player screen
+- This keeps the navigation simple and easy to use
 
-In the output, you'll find options to open the app in a
+### UI
+- `react-native-paper` is used for buttons and layout components
+- This avoids plain default components and keeps the UI clean and consistent
+## Tech Stack
+- Expo (Managed Workflow)
+- Expo Router
+- react-native-webview
+- expo-notifications
+- expo-av
+- react-native-paper
+## Project Structure
+app/
+├─ _layout.tsx
+├─ (tabs)/
+│ ├─ _layout.tsx
+│ ├─ index.tsx // WebView & Notifications
+│ └─ video.tsx // Video Player
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Testing
+The app was tested on a physical Android device using Expo Go.
+All features including WebView loading, delayed notifications,
+navigation, and HLS video playback were verified on the real device.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Running the App
 
-## Get a fresh project
-
-When you're ready, run:
-
+1. Install dependencies:
 ```bash
-npm run reset-project
-```
+npm install
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-## Learn more
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
