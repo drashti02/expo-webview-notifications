@@ -1,10 +1,9 @@
 import * as Notifications from "expo-notifications";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ActivityIndicator } from "react-native";
 import { Button, Card } from "react-native-paper";
 import { WebView } from "react-native-webview";
 
-// Required so notifications show when app is open
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -16,7 +15,8 @@ Notifications.setNotificationHandler({
 });
 
 export default function WebViewScreen() {
-  const [webviewNotified, setWebviewNotified] = useState(false); // ✅ Track notification
+  const [webviewNotified, setWebviewNotified] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Notifications.requestPermissionsAsync();
@@ -40,6 +40,7 @@ export default function WebViewScreen() {
     if (!webviewNotified) {
       sendNotification("WebView Loaded", "Website finished loading");
       setWebviewNotified(true);
+      setLoading(false);
     }
   };
 
@@ -48,9 +49,10 @@ export default function WebViewScreen() {
       <WebView
         source={{ uri: "https://expo.dev" }}
         style={styles.webview}
+        onLoadStart={()=>setLoading(true)}
         onLoadEnd={handleWebViewLoad}
       />
-
+{loading && <ActivityIndicator style={styles.loader}size="large" />}
       <Card style={styles.card}>
         <Button
           mode="contained"
@@ -79,4 +81,14 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   webview: { flex: 1 },
   card: { padding: 15 },
+  loader: {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundColor: "rgba(255,255,255,0.7)",
+},
 });
