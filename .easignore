@@ -1,0 +1,11 @@
+.vscode
+node_modules
+.expo
+.expo-shared
+.git
+.gitignore
+dist
+build
+android
+ios
+*.log
